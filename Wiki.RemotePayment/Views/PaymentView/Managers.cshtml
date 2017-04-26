@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+<script src="~/dist/public/managers.entry_201742525.min.js"></script>
+<div style="margin-bottom: 10px;" class="row">
+    <button data-bind="click: function() {$root.modalModel.showModal($root.managerModel,null);}"  type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span>Добавить
+    </button>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <div data-bind="foreach: alertsModel.alerts">
+            <hr class="message-inner-separator">
+            <p data-bind="alert: $data" role="alert">
+            </p>
+        </div>
+    </div>
+</div>
+<div class="table-responsive col-md-8">
+    <table class="jopa-table table table-striped table-hover table-bordered table-condensedd">
+        <thead>
+            <tr>
+                <th>Клиенсткий ид</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Дата последнего обновления</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:managerModel.managers">
+        <tr>
+            <td data-bind="text:clientId"></td>
+            <td data-bind="text:name"></td>
+            <td data-bind="text:phone"></td>
+            <td data-bind="text:lastModified"></td>
+            <td>
+                <a href="#" data-toggle="tooltip" data-placement="top" title="Удалить">
+                    <span class="btn btn-default glyphicon glyphicon-remove" data-bind="click:function(){ if (confirm('Вы уверены, что хотите удалить платеж?')) $parent.delete($data) }" ></span>
+                </a>
+                <a href="#" data-toggle="tooltip" data-placement="top" title="Обновить">
+                    <span class="btn btn-default glyphicon glyphicon-refresh" data-bind="click: function() {$root.modalModel.showModal($root.managerModel,$data); }"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script id="modal" class="modal-dialog" type="text/html">
+    <div class="modal-dialog">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bind="click:close" aria-hidden="true">&times;</button>
+                    <h4 data-bind="html:header" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <label for="operator" class="col-sm-3 control-label">Код клиента:</label>
+                        <div class="input-group">
+                            <input type="text" data-bind="value:clientId,disable:isDisabled,hasFocus:isFocused" placeholder="Клиентский код..." class="form-control" id="operator" maxlength="5" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-sm-3 control-label">Телефон:</label>
+                        <div class="input-group ">
+                            <input type="text" class="form-control" placeholder="Номер телефона..." data-bind="masked: phone, mask:'+7(999)-999-99-99'" id="phone" required />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bind="click:close,html:closeLabel">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bind="click:action,html:primaryLabel" id="save-changes">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div> 
+</script>
+<div data-bind="bootstrapModal:$root.modalModel.modal" class="modal" id="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"></div>
